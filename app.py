@@ -1,5 +1,5 @@
 import curses
-from models import randomize_puzzle, get_correct_puzzle
+from controller import get_puzzle
 from console_ui import display_output, clear_ui, handle_keypress
 
 
@@ -7,7 +7,7 @@ def main():
     """Fonction principale de l'application"""
     try:
         # Récupération d'un taquin tiré aléatoirement
-        puzzle = randomize_puzzle(get_correct_puzzle())
+        puzzle = get_puzzle()
 
         while True:
             # Attend une action et affiche le résultat

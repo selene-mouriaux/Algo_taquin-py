@@ -1,8 +1,7 @@
 import curses
 from terminaltables import AsciiTable
 from settings import PUZZLE_SIZE, GAME_TITLE
-from controller import move
-from models import has_won
+from controller import make_move, has_won
 
 
 def init_ui():
@@ -42,19 +41,19 @@ def handle_keypress(puzzle):
     if key == "KEY_DOWN":
         ui.addstr(height - 1, 0, "↓ DOWN - A FAIRE", curses.A_REVERSE)
 
-        puzzle = move("DOWN", puzzle)
+        puzzle = make_move("DOWN", puzzle)
 
     elif key == "KEY_UP":
         ui.addstr(height - 1, 0, "↑ UP - A FAIRE", curses.A_REVERSE)
-        puzzle = move("UP", puzzle)
+        puzzle = make_move("UP", puzzle)
 
     elif key == "KEY_LEFT":
         ui.addstr(height - 1, 0, "← LEFT - A FAIRE", curses.A_REVERSE)
-        puzzle = move("LEFT", puzzle)
+        puzzle = make_move("LEFT", puzzle)
 
     elif key == "KEY_RIGHT":
         ui.addstr(height - 1, 0, "→ RIGHT - A FAIRE", curses.A_REVERSE)
-        puzzle = move("RIGHT", puzzle)
+        puzzle = make_move("RIGHT", puzzle)
 
     elif key in ("Q",):
         raise KeyboardInterrupt
@@ -63,6 +62,9 @@ def handle_keypress(puzzle):
 
 
 def get_puzzle_as_str(puzzle):
+#    print(puzzle)
+#    raise ValueError(str(puzzle))
+
     table = AsciiTable(puzzle)
     table.inner_heading_row_border = False
     table.inner_row_border = True
