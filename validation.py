@@ -23,36 +23,50 @@ try:
 except:
     pass
 
+
+def is_file_exist(path):
+    return os.path.exists(path)
+
+
+def copy_file(filename, src_path, dst_path):
+    os.chdir(src_path)
+    content = open(filename, 'r')
+    copie = content.read()
+    content.close()
+
+    os.chdir(dst_path)
+    content = open(filename, 'w')
+    content.write(copie)
+    content.close()
+
+
+def get_directory(name):
+    return os.path.join(basic_location, name)
+
+
+def delete_file(filename, path):
+    os.chdir(path)
+    os.remove(filename)
+
+
+def display_contents(filename):
+    with open(filename, 'r') as contents:
+        print("{} is filled with : {}.".format(filename, contents.read()))
+
+
 while True:
 
-    if os.path.exists(os.path.join(basic_location, "A", test)):
+    if is_file_exist(os.path.join(basic_location, "A", test)):
         print("{} exists in Rep A, I'm moving it to Rep B".format(test))
-        os.chdir(os.path.join(basic_location, "A"))
-        content = open(test, 'r')
-        copie = content.read()
-        content.close()
-        os.chdir(os.path.join(basic_location, "B"))
-        content = open(test, 'w')
-        content.write(copie)
-        content.close()
-        with open(test, 'r') as contents:
-            print("{} is filled with : {}.".format(test, contents.read()))
-        os.chdir(os.path.join(basic_location, "A"))
-        os.remove(test)
-    elif os.path.exists(os.path.join(basic_location, "B", test)):
+        copy_file(test, get_directory("A"), get_directory("B"))
+        display_contents(test)
+        delete_file(test, get_directory("A"))
+
+    elif is_file_exist(os.path.join(basic_location, "B", test)):
         print("{} exists in Rep B, I'm moving it to Rep A".format(test))
-        os.chdir(os.path.join(basic_location, "B"))
-        content = open(test, 'r')
-        copie = content.read()
-        content.close()
-        os.chdir(os.path.join(basic_location, "A"))
-        content = open(test, 'w')
-        content.write(copie)
-        content.close()
-        with open(test, 'r') as contents:
-            print("{} is filled with : {}.".format(test, contents.read()))
-        os.chdir(os.path.join(basic_location, "B"))
-        os.remove(test)
+        copy_file(test, get_directory("B"), get_directory("A"))
+        display_contents(test)
+        delete_file(test, get_directory("B"))
     else:
         print("{} doesn't exist either in rep A nor B, let's create it in rep A !".format(test))
         input("pause\n")
@@ -60,13 +74,11 @@ while True:
         content = open(test, 'x')
         content.close()
         print("Just created it and closed it straight away with open(x, 'x') & x.close()")
-        with open(test, 'r') as contents:
-            print("{} is filled with : {}.".format(test, contents.read()))
+        display_contents(test)
         print("Lets open it again using 'a' to append some text to it with \'ajout\' :)")
         content = open(test, 'a')
         content.write("\nAjout")
         content.close()
         print("Lets check {}'s contents using \'with open...\' :".format(test))
-        with open(test, 'r') as contents:
-            print("{} is filled with : {}.".format(test, contents.read()))
-    input("recommencer\n")
+        display_contents(test)
+    input("keep going on\n")
